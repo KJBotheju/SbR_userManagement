@@ -1,6 +1,7 @@
 package com.user.usermanagement.service;
 
 import com.user.usermanagement.exception.StudentAlreadyExistsException;
+import com.user.usermanagement.exception.StudentNotFoundException;
 import com.user.usermanagement.model.Student;
 import com.user.usermanagement.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,15 @@ public class StudentService implements IStudentService{
         return studentRepository.save(student);
     }
 
-
-
-
     @Override
     public Student updateStudent(Student student, Long id) {
-        return null;
+        return studentRepository.findById(id).map(st ->{
+            st.setFirstName(st.getFirstName());
+            st.setLastName(st.getLastName());
+            st.setEmail(st.getEmail());
+            st.setFaculty(st.getFaculty());
+            return studentRepository.save(st);
+        }).orElseThrow(()->new StudentNotFoundException("Sorry, this student could not found"));
     }
 
     @Override
