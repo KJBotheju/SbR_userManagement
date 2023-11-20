@@ -32,10 +32,10 @@ public class StudentService implements IStudentService{
     @Override
     public Student updateStudent(Student student, Long id) {
         return studentRepository.findById(id).map(st ->{
-            st.setFirstName(st.getFirstName());
-            st.setLastName(st.getLastName());
-            st.setEmail(st.getEmail());
-            st.setFaculty(st.getFaculty());
+            st.setFirstName(student.getFirstName());
+            st.setLastName(student.getLastName());
+            st.setEmail(student.getEmail());
+            st.setFaculty(student.getFaculty());
             return studentRepository.save(st);
         }).orElseThrow(()->new StudentNotFoundException("Sorry, this student could not found"));
     }
@@ -51,7 +51,7 @@ public class StudentService implements IStudentService{
         if(!studentRepository.existsById(id)){
             throw new StudentNotFoundException("Sorry, this student not found");
         }
-
+    studentRepository.deleteById(id);
 
     }
 
